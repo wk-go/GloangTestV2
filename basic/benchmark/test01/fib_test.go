@@ -3,6 +3,7 @@ package test01
 import "testing"
 
 var fibMap = map[int]int{
+	0:  0,
 	1:  1,
 	2:  1,
 	3:  2,
