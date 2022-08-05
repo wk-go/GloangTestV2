@@ -6,3 +6,4 @@
 *.so
 .DS_Store
 go_build_*
+*.sum

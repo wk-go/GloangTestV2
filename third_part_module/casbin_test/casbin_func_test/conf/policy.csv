@@ -1,0 +1,8 @@
+g,admin,user_manger
+
+p,admin,/admin,any,
+p,user_manager,/admin/user,any,owner
+p,user_manager,/admin/user/create,any,
+p,user_manager,/admin/user/delete,any,
+p,user_manager,/admin/user/update,any,
+p,user_manager,/admin/user/view,any,
