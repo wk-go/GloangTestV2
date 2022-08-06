@@ -41,7 +41,7 @@ func NewEnforceData(user User, sub, obj, act string, params map[string]interface
 }
 
 func (d *EnforceData) GetData() []interface{} {
-	d.Data = []interface{}{d.Object, d.Subject, d.Action, d}
+	d.Data = []interface{}{d.Subject, d.Object, d.Action, d}
 	return d.Data
 }
 
