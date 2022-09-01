@@ -39,6 +39,10 @@ func main() {
 	fmt.Println("&employee.Elem().FieldByName(\"Department\")", reflect.ValueOf(&employee).Elem().FieldByName("Department"))
 	fmt.Println("&employee.Elem().FieldByName(\"Department\").Kind()", reflect.ValueOf(&employee).Elem().FieldByName("Department").Kind())
 
+	// 获取没有的值,不会报错，会返回类型为reflectInvalid的值
+	fmt.Println("&employee.Elem().FieldByName(\"XXX\")", reflect.ValueOf(&employee).Elem().FieldByName("XXX"))
+	fmt.Println("&employee.Elem().FieldByName(\"XXX\").Kind()", reflect.ValueOf(&employee).Elem().FieldByName("XXX").Kind())
+
 	// 这样访问会报错: panic: reflect: call of reflect.Value.FieldByName on ptr Value
 	fmt.Println("&employee", reflect.ValueOf(&employee).FieldByName("Department"))
 
