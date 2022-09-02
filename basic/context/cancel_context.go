@@ -43,7 +43,7 @@ func sub(ctx context.Context, id int, num chan int) {
 		case n := <-num:
 			fmt.Printf("sub[%02d]: %d\n", id, n)
 		case <-ctx.Done():
-			fmt.Printf("sub[%02d] canceled\n", id)
+			fmt.Printf("sub[%02d] %s\n", id, ctx.Err())
 			return
 		}
 	}

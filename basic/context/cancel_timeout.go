@@ -41,7 +41,7 @@ func subTimeout(ctx context.Context, id int, num chan int) {
 		case n := <-num:
 			fmt.Printf("subTimeout[%02d]: %d\n", id, n)
 		case <-ctx.Done():
-			fmt.Printf("subTimeout[%02d] timeout\n", id)
+			fmt.Printf("subTimeout[%02d] %s\n", id, ctx.Err())
 			return
 		}
 	}
