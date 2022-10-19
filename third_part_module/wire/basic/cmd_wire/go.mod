@@ -1,4 +1,4 @@
-module wire_basic
+module cmd_wire
 
 go 1.18
 
