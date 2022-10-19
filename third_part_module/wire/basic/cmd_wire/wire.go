@@ -9,7 +9,7 @@ import (
 
 // wire.go
 
-func InitializeEvent() (Event, error) {
+func InitializeEvent(phrase string) (Event, error) {
 	wire.Build(NewEvent, NewGreeter, NewMessage)
 	return Event{}, nil
 }

@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func NewMessage() Message {
-	return Message("Hi there!")
+func NewMessage(phrase string) Message {
+	return Message(phrase)
 }
 
 type Message string
