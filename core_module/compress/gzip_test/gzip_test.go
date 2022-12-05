@@ -2,6 +2,7 @@ package gzip_test
 
 import (
 	"compress/gzip"
+	"encoding/json"
 	"io"
 	"log"
 	"os"
@@ -33,4 +34,65 @@ func TestUncomporess(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+type Data struct {
+	Name  string            `json:"name"`
+	Data  string            `json:"data"`
+	Files map[string][]byte `json:"files"`
+}
+
+func TestCompressStructData(t *testing.T) {
+	data := Data{
+		Name: "test",
+		Data: "filename:gzip_test.go",
+		Files: map[string][]byte{
+			"gzip_test.go": nil,
+		},
+	}
+	t.Log(data)
+	t.Log(os.Getwd())
+
+	fileContent, err := os.ReadFile("./gzip_test.go")
+	if err != nil {
+		t.Error(err)
+	}
+	data.Files["gzip_test.go"] = fileContent
+	_json, _ := json.Marshal(data)
+	gzipFile, err := os.Create("test/data.gz")
+	defer gzipFile.Close()
+	gzipWriter := gzip.NewWriter(gzipFile)
+	defer gzipWriter.Close()
+	gzipWriter.Write(_json)
+
+}
+
+func TestUnCompressStructData(t *testing.T) {
+	gzipFile, err := os.Open("./test/data.gz")
+	if err != nil {
+		t.Error(err)
+	}
+	defer gzipFile.Close()
+	gzipReader, err := gzip.NewReader(gzipFile)
+	if err != nil {
+		t.Error(err)
+	}
+	defer gzipReader.Close()
+	_data, err := io.ReadAll(gzipReader)
+	if err != nil {
+		t.Error(err)
+	}
+	data := &Data{}
+	if err := json.Unmarshal(_data, data); err != nil {
+		t.Error(err)
+	}
+
+	t.Log(data)
+
+	outfileWriter, err := os.Create("./test/_data.json")
+	if err != nil {
+		t.Error(err)
+	}
+	defer outfileWriter.Close()
+	outfileWriter.Write(_data)
 }
