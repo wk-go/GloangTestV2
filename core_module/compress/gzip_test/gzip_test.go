@@ -44,7 +44,7 @@ type Data struct {
 
 func TestCompressStructData(t *testing.T) {
 	data := Data{
-		Name: "test",
+		Name: "ftest",
 		Data: "filename:gzip_test.go",
 		Files: map[string][]byte{
 			"gzip_test.go": nil,
