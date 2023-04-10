@@ -122,21 +122,3 @@ func UnZip(zipFile, dst string) error {
 	}
 	return nil
 }
-func main() {
-	TestZip()
-	TestUnZip()
-}
-
-func TestZip() {
-	dest := "myFiles.zip"
-	err := Zip(dest, "zipdir")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-func TestUnZip() {
-	err := UnZip("myFiles.zip", "unzip")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
