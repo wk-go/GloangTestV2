@@ -11,13 +11,18 @@ import (
 	"strings"
 )
 
-//zip path
+// zip path
 func Zip(dst string, files ...string) error {
-	rootPath := files[0]
-	files = files[1:]
 	dstFile, _ := os.Create(dst)
 	defer dstFile.Close()
-	zipWriter := zip.NewWriter(dstFile)
+	return ZipToWriter(dstFile, files...)
+}
+
+// zip path
+func ZipToWriter(dstWriter io.Writer, files ...string) error {
+	rootPath := files[0]
+	files = files[1:]
+	zipWriter := zip.NewWriter(dstWriter)
 	defer zipWriter.Close()
 	stack := list.New()
 	if len(files) > 0 {
@@ -81,7 +86,7 @@ func Zip(dst string, files ...string) error {
 	return nil
 }
 
-//unzip
+// unzip
 func UnZip(zipFile, dst string) error {
 	reader, err := zip.OpenReader(zipFile)
 	if err != nil {
