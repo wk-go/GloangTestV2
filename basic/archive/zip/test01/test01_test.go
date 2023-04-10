@@ -9,8 +9,7 @@ import (
 func TestZipToWriter(t *testing.T) {
 	var (
 		dest = "myFiles1.zip"
-		b    = make([]byte, 0, 1024*1024*32)
-		buf  = bytes.NewBuffer(b[:])
+		buf  = new(bytes.Buffer)
 	)
 
 	ZipToWriter(buf, "zipdir")
