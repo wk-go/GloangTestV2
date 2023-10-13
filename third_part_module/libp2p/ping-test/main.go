@@ -50,10 +50,12 @@ func main() {
 	if node == nil {
 		return
 	}
-	ch := make(chan os.Signal, 1)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	<-ch
-	fmt.Println("Shutting Down...")
+	if *conf.Command == "server" {
+		ch := make(chan os.Signal, 1)
+		signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+		<-ch
+		fmt.Println("Shutting Down...")
+	}
 	if err := node.Close(); err != nil {
 		panic(err)
 	}
