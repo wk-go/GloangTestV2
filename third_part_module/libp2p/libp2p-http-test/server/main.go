@@ -42,14 +42,20 @@ func main() {
 }
 
 func httpServer(host host.Host) {
-	listener, _ := gostream.Listen(host, myProtocol)
-	defer listener.Close()
 	go func() {
+		listener, err := gostream.Listen(host, myProtocol)
+		if err != nil {
+			panic(err)
+		}
+		defer listener.Close()
+
 		http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Hi!"))
 		})
 		server := &http.Server{}
-		server.Serve(listener)
+		if err := server.Serve(listener); err != nil {
+			panic(err)
+		}
 	}()
 	peerInfo := peer.AddrInfo{
 		host.ID(), host.Addrs(),
