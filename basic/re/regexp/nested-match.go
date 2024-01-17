@@ -42,4 +42,5 @@ func main() {
 	re, _ := regexp.Compile(`\([^()]*\)`)
 	normalMatches := re.FindAllString(nested, -1)
 	fmt.Println(normalMatches) // 输出: ["(ghi)"]
+
 }
