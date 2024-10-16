@@ -118,6 +118,29 @@ return t
 		}
 	}
 
+	// Opening a subset of builtin modules
+	L07 := lua.NewState(lua.Options{SkipOpenLibs: true})
+	defer L07.Close()
+	for _, pair := range []struct {
+		n string
+		f lua.LGFunction
+	}{
+		{lua.LoadLibName, lua.OpenPackage},
+		{lua.BaseLibName, lua.OpenBase},
+		{lua.TabLibName, lua.OpenTable},
+		{lua.OsLibName, lua.OpenOs},
+	} {
+		if err := L07.CallByParam(lua.P{
+			Fn:      L07.NewFunction(pair.f),
+			NRet:    0,
+			Protect: true,
+		}, lua.LString(pair.n)); err != nil {
+			fmt.Printf("L07 error: %s", err)
+		}
+	}
+	if err := L07.DoFile("script/subset/main.lua"); err != nil {
+		fmt.Printf("L07 DoFile error: %s", err)
+	}
 }
 
 func Double(L *lua.LState) int {
