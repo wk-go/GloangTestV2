@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	lua "github.com/yuin/gopher-lua"
+	"gopher_lua_test/modules"
 )
 
 func main() {
@@ -140,6 +141,15 @@ return t
 	}
 	if err := L07.DoFile("script/subset/main.lua"); err != nil {
 		fmt.Printf("L07 DoFile error: %s", err)
+	}
+
+	// Creating a module by Go
+	fmt.Println("\n\n---- Creating a module by Go: L08 ----")
+	L08 := lua.NewState()
+	defer L08.Close()
+	L08.PreloadModule("mymodule", modules.Loader)
+	if err := L08.DoFile("script/go_module_test/main.lua"); err != nil {
+		panic(err)
 	}
 }
 
