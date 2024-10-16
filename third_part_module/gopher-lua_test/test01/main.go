@@ -85,6 +85,8 @@ return t
 	_fn := L06.GetGlobal("say_hello")
 	fn := _fn.(*lua.LFunction)
 	L06.Resume(co01, fn, lua.LString("earth"))
+	// another method
+	L06.CallByParam(lua.P{Fn: fn}, lua.LString("everyone"))
 
 	co02, _ := L06.NewThread()
 	fabiFunc := L06.GetGlobal("fibonacci").(*lua.LFunction)
