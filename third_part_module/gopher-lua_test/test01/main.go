@@ -76,30 +76,35 @@ return t
 	}
 
 	// call a function from lua
+	fmt.Println("\n\n---- call function from lua: L06 ----")
 	L06 := lua.NewState()
 	defer L06.Close()
 	if err := L06.DoFile("./script/function.lua"); err != nil {
 		panic(err)
 	}
 
-	co01, _ := L06.NewThread()
-	_fn := L06.GetGlobal("say_hello")
-	fn := _fn.(*lua.LFunction)
-	L06.Resume(co01, fn, lua.LString("earth"))
-	// another method
-	L06.CallByParam(lua.P{Fn: fn}, lua.LString("everyone"))
-
-	co02, _ := L06.NewThread()
-	fabiFunc := L06.GetGlobal("fibonacci").(*lua.LFunction)
-	st, err, values := L06.Resume(co02, fabiFunc, lua.LNumber(6))
-	if st == lua.ResumeError {
-		fmt.Println("fabiFunc call yield break(error):", err.Error())
+	fmt.Println("---- call fibonacci function ----")
+	if err := L06.CallByParam(lua.P{
+		Fn:      L06.GetGlobal("fibonacci"),
+		NRet:    1,
+		Protect: true,
+	}, lua.LNumber(6)); err != nil {
+		fmt.Printf("call function error: %s\n", err)
 	}
-	for i, lv := range values {
-		fmt.Printf("fabiFunc call result: %v : %v\n", i, lv)
-	}
-	fmt.Println("fabiFunc call yield break(ok)")
+	fmt.Printf("Stack top: %d\n", L06.GetTop())
+	ret := L06.Get(-1) // returned value
+	L06.Pop(1)         // remove received value
+	fmt.Println("fibonacci(6):", ret)
+	fmt.Printf("Stack top: %d\n", L06.GetTop())
 
+	fmt.Println("---- call say_hello function ----")
+	fn := L06.GetGlobal("say_hello")
+	if err := L06.CallByParam(lua.P{Fn: fn, NRet: 0, Protect: true}, lua.LString("everyone")); err != nil {
+		fmt.Printf("call function error: %s\n", err)
+	}
+
+	// coroutine call test
+	fmt.Println("\n\n---- coroutine call test ----")
 	co03, _ := L06.NewThread()
 	coroFunc := L06.GetGlobal("coro").(*lua.LFunction)
 	for {
